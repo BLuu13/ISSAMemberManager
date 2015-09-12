@@ -1,7 +1,7 @@
 _author__ = 'Sebastian'
 
 import xml.etree.ElementTree as ET
-import os
+import os # can use this to find a path on local hard drive
 import sys
 
 class ConfigReader():
@@ -13,14 +13,16 @@ class ConfigReader():
         try:
             self.config = ET.parse(self.config_location)
             self.read_config()
+            # 2 methods below could be called apart from initialization
+            # They are placed there right now just for testing purposes
             self.print_root()
-            self.print_parent()
+            self.print_parent() 
         except ET.ParseError as error:
             # todo: something to pull down generic membermailer.xml from web
             sys.exit("Error: Path is incorrect or file does not exist")
 
     def read_config(self):
-        root = self.config.getroot()
+        self.root = self.config.getroot()
       # self.database - get db file location from config
 
     def print_root(self):
@@ -33,14 +35,14 @@ class ConfigReader():
         print("------------------------------")
         print("Printing Parent Elements...")
         print("------------------------------")
-        for child in root:
+        for child in self.root:
                 print(child.tag)
     
     def print_children(self):
         print("------------------------------")
         print("Printing Children Elements...")
         print("------------------------------")
-        for child in root:
+        for child in self.root:
             for children in child:
                 print("Key:", children.tag, "-> Value:", children.text)
 
