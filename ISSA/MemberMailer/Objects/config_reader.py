@@ -1,48 +1,67 @@
+import xml.etree.ElementTree as ET
+
 _author__ = 'Sebastian'
 
-import xml.etree.ElementTree as ET
-import os # can use this to find a path on local hard drive
-import sys
 
 class ConfigReader():
 
-    # data_file = "E:/Users/Sebastian/Desktop/sample_config2.xml
     config_location = '.\config\membermailer.xml'
 
     def __init__(self):
         try:
             self.config = ET.parse(self.config_location)
-            self.read_config()
-            # 2 methods below could be called apart from initialization
-            # They are placed there right now just for testing purposes
-            self.print_root()
-            self.print_parent() 
+            self.root = self.config.getroot()
+
+        except FileNotFoundError as error:
+            print("FileNotFoundError: {0}".format(error))
+            # not sure if should do sys.exit() here vs print
+
         except ET.ParseError as error:
-            # todo: something to pull down generic membermailer.xml from web
-            sys.exit("Error: Path is incorrect or file does not exist")
+            print("ParseError: {0}".format(error))
 
-    def read_config(self):
+    # Only use this method if you want to override default file
+    # otherwise, you can just call ConfigReader() and it
+    # will automatically read default xml file path
+    def read_config(self, file):
+        self.config = ET.parse(file)
         self.root = self.config.getroot()
-      # self.database - get db file location from config
 
+    #def create_config(self):
+    #def write_config(self):
+    
     def print_root(self):
-        print("------------------------------")
-        print("Printing Root Element...")
-        print("------------------------------")
         print(self.root.tag)
 
     def print_parent(self):
-        print("------------------------------")
-        print("Printing Parent Elements...")
-        print("------------------------------")
-        for child in self.root:
-                print(child.tag)
-    
-    def print_children(self):
-        print("------------------------------")
-        print("Printing Children Elements...")
-        print("------------------------------")
-        for child in self.root:
-            for children in child:
-                print("Key:", children.tag, "-> Value:", children.text)
+        for self.child in self.root:
+                print(self.child.tag)
 
+    def print_children(self):
+        for self.child in self.root:
+            for self.children in self.child:
+                print("Key:", self.children.tag, "-> Value:", self.children.text)
+
+
+# Testing config_reader class
+# Still not sure how to write unit tests yet
+
+# Instantiate ConfigReader class
+test_reader = ConfigReader()
+
+# pass in an xml file to override default
+data_file = "E:\\Users\Sebastian\Desktop\sample_config2.xml"
+test_reader.read_config(data_file)
+print("---------------------------------")
+print("Printing out root elements...")
+print("---------------------------------")
+test_reader.print_root()
+print()
+print("---------------------------------")
+print("Printing out parent elements...")
+print("---------------------------------")
+test_reader.print_parent()
+print()
+print("---------------------------------")
+print("Printing out children elements...")
+print("---------------------------------")
+test_reader.print_children()
