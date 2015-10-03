@@ -5,7 +5,8 @@ _author__ = 'Sebastian'
 
 class ConfigReader():
 
-    config_location = '.\config\membermailer.xml'
+    #config_location = '.\config\membermailer.xml'
+    config_location = "E:\\Users\Sebastian\Desktop\sample_config2.xml"
 
     def __init__(self):
         try:
@@ -26,9 +27,6 @@ class ConfigReader():
         self.config = ET.parse(file)
         self.root = self.config.getroot()
 
-    #def create_config(self):
-    #def write_config(self):
-    
     def print_root(self):
         print(self.root.tag)
 
@@ -41,16 +39,12 @@ class ConfigReader():
             for self.children in self.child:
                 print("Key:", self.children.tag, "-> Value:", self.children.text)
 
-
-# Testing config_reader class
+####################################
+#  Testing config_reader class     #
+####################################
 # Still not sure how to write unit tests yet
-
-# Instantiate ConfigReader class
+# Instantiate ConfigReader class and read default xml file
 test_reader = ConfigReader()
-
-# pass in an xml file to override default
-data_file = "E:\\Users\Sebastian\Desktop\sample_config2.xml"
-test_reader.read_config(data_file)
 print("---------------------------------")
 print("Printing out root elements...")
 print("---------------------------------")
